@@ -3,7 +3,7 @@ const dbManager = require('../utils/db-manager').DBManager;
 
 class Shortener {
 
-    constructor(adf) {
+    constructor() {
 
 		// Global count variable to maintain the URL count
 		this.count = 0
