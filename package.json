@@ -1,0 +1,15 @@
+{
+  "name": "miniURL",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": "https://github.com/muskankhedia/miniURL.git",
+  "author": "muskankhedia <muskan.khedia2000@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-json-db": "^1.0.3"
+  }
+}
