@@ -1,6 +1,5 @@
 os:
   - linux
-  - mac
 
 sudo: required
 
@@ -11,10 +10,8 @@ node_js:
   - 12
 
 before_script:
-	- npm i npm@latest -g
-
-install:
-	- yarn install
+  - npm i npm@latest -g
+  - yarn install
 
 script:
-	- yarn start
+  - yarn start &
