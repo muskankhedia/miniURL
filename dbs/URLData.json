@@ -4,6 +4,16 @@
             "e": {
                 "1": "https://developer.org/en-US/docs/Web/Reference/Global_Objects/String/replace"
             }
+        },
+        "g": {
+            "i": {
+                "1": "https://github.com/muskankhedia/miniURL"
+            }
+        },
+        "a": {
+            "p": {
+                "1": "https://apexcharts.com/react-chart-demos/area-charts/irregular-timeseries/"
+            }
         }
     }
 }

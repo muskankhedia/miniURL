@@ -15,6 +15,10 @@ class DBManager {
         this.db.push(path, data, cond)
     }
 
+    getData(path) {
+        return this.db.getData(path);
+    }
+
 }
 
 module.exports = { DBManager }
