@@ -21,8 +21,9 @@ app.get('/urlmini', function(req, res) {
  * Returns the original URL afer parsing the input
  * URL code.
  */
-app.get('/url', function(req, res) {
-    res.send(shortURL.getUrl(req.query.query))
+app.get('/:url', function(req, res) {
+    const savedURL = shortURL.getUrl(req.params.url)
+    res.redirect(savedURL)
 });
 
 // Listens the server in PORT 3000

@@ -74,7 +74,9 @@ class Shortener {
 		const char0 = newsURL.charAt(0);
 		const char1 = newsURL.charAt(1);
 
-		index2[this.count] = backupURL;
+		const hexcount = this.count.toString(16);
+		console.log("this.hexcount: ", hexcount);
+		index2[hexcount] = backupURL;
 		index1[char1] = index2;
 		dataJSON[char0] = index1;
 
@@ -82,16 +84,16 @@ class Shortener {
 
 		// Creates the minified URL
 		console.warn(request.headers.host)
-		this.short = request.headers.host + char0  + char1 + this.count;
-		this.short = `<a href="http://${request.headers.host}/url?query=${char0 + char1 + this.count}">
-			http://${request.headers.host}/url?query=${char0 + char1 + this.count}</a>`;
+		this.short = request.headers.host + char0  + char1 + this.hexcount;
+		this.short = `<a href="http://${request.headers.host}/${char0 + char1 + hexcount}">
+			http://${request.headers.host}/${char0 + char1 + hexcount}</a>`;
 		return this.short
 	}
 
 	getUrl(code) {
 		const indexLevel1 = code.charAt(0);
 		const indexLevel2 = code.charAt(1);
-		const hexCode = code.substring(2);
+		const hexCode = code.slice(2);
 
 		const path = `/URLs/${indexLevel1}/${indexLevel2}/${hexCode}`;
 		return this.db.getData(path);
