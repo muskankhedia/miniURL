@@ -1,10 +1,8 @@
-
 const dbManager = require('../utils/db-manager').DBManager;
 
 class Shortener {
 
-    constructor(adf) {
-
+    constructor() {
 		// Global count variable to maintain the URL count
 		this.count = 0
 
@@ -20,58 +18,43 @@ class Shortener {
 	 *
 	 * @param {string} longURL The input URL
 	 */
-	shortenURL(longURL) {
-		this.x = this.removeElements(longURL)
-		return this.x
+	shortenURL(req, longURL) {
+		return this.removeElements(req, longURL);
 	}
 
 	/**
 	 * Returns the newURL deleting the scheme
-	 *
 	 * @param {string} rawURL The raw input URL
 	 */
-    removeElements(rawURL) {
-
+    removeElements(req, rawURL) {
 		this.longURL = rawURL;
 		this.count++;
-
-        var backupURL = this.longURL;
-        var data = this.longURL.split('://');
+        const backupURL = this.longURL;
+        const data = this.longURL.split('://');
 
         if (data[0] == 'http' || data[0] == 'https') {
+			data.splice(0, 1)
 
-            data.splice(0, 1)
             if (data[0].startsWith("www")) {
-
                 data[0] = data[0].replace('www.', '');
                 this.newURL = data.join('');
-                this.newURL = data[0];
-
+                this.newURL = data[0]; // do we require this?
             } else {
-
 				this.newURL = data.join('');
-
 			}
-
         } else {
-
 			data = this.longURL.split('.');
 
             if (data[0] == 'wwww') {
-
                 data[0] = data[0].replace('www.', '');
 				this.newURL = data.join('');
-
             } else {
-
 				this.newURL = this.longURL;
-
 			}
-
 		}
 
-		this.datJSON = this.saveURL(this.newURL, backupURL)
-        return this.datJSON
+		this.datJSON = this.saveURL(req, this.newURL, backupURL);
+        return this.datJSON;
 	}
 
 	/**
@@ -81,12 +64,15 @@ class Shortener {
 	 * @param {string} newsURL The refined URl
 	 * @param {string} backupURL Backup of the raw URL
 	 */
-	saveURL(newsURL, backupURL) {
+	saveURL(request, newsURL, backupURL) {
+		console.log(newsURL, ' and backup ', backupURL)
 
-		var index1 = {}, index2 = {}, dataJSON = {};
+		const index1 = {};
+		const index2 = {};
+		const dataJSON = {};
 
-		var char0 = newsURL.charAt(0);
-		var char1 = newsURL.charAt(1);
+		const char0 = newsURL.charAt(0);
+		const char1 = newsURL.charAt(1);
 
 		index2[this.count] = backupURL;
 		index1[char1] = index2;
@@ -95,11 +81,21 @@ class Shortener {
 		this.db.pushData('/URLs', dataJSON, false);
 
 		// Creates the minified URL
-		this.short = "https://miniurl.in/" + char0  + char1 + this.count;
+		console.warn(request.headers.host)
+		this.short = request.headers.host + char0  + char1 + this.count;
+		this.short = `<a href="http://${request.headers.host}/url?query=${char0 + char1 + this.count}">
+			http://${request.headers.host}/url?query=${char0 + char1 + this.count}</a>`;
 		return this.short
-
 	}
 
+	getUrl(code) {
+		const indexLevel1 = code.charAt(0);
+		const indexLevel2 = code.charAt(1);
+		const hexCode = code.substring(2);
+
+		const path = `/URLs/${indexLevel1}/${indexLevel2}/${hexCode}`;
+		return this.db.getData(path);
+	}
 }
 
 module.exports = { Shortener }
